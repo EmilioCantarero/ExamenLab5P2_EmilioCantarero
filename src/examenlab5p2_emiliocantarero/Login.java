@@ -5,16 +5,47 @@
  */
 package examenlab5p2_emiliocantarero;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Emilio Cantarero
  */
 public class Login extends javax.swing.JFrame {
+    
+    ArrayList<Usuario>usuarios=new ArrayList();
+    private String nombre;
+    public ArrayList<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(ArrayList<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    
 
     /**
      * Creates new form Login
      */
     public Login() {
+        
+        
+        usuarios.add(new Administrador("James", "Jamesito", "123", 18));
+        
+        usuarios.add(new Vendedor(0, 0, new CuentaBancaria(8000.0, 12345678), "Juan", "Juan456", "123", 23));
+        usuarios.add(new Vendedor(0, 0, new CuentaBancaria(7500.0, 12345679), "Pedro", "Pedrito88", "123", 25));
+        usuarios.add(new Comprador(new CuentaBancaria(6000, 23451234), 500, "Julio", "Julito", "123", 30));
+        usuarios.add(new Comprador(new CuentaBancaria(7000, 53451234), 600, "Gael", "HanSolo", "123", 19));
+        
         initComponents();
     }
 
@@ -46,6 +77,12 @@ public class Login extends javax.swing.JFrame {
 
         T_Usuario.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         T_Usuario.setText("Usuario");
+
+        e_Usuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                e_UsuarioActionPerformed(evt);
+            }
+        });
 
         T_Contra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         T_Contra.setText("Contraseña");
@@ -137,14 +174,52 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void B_IniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B_IniciarSesionActionPerformed
-        // TODO add your handling code here:
+        int c1=0;
+        for (Usuario t : usuarios) {
+            vAdmin a=new vAdmin();
+            if (e_Usuario.getText().equals(t.getnUsuario())&&e_Contra.getText().equals(t.getContraseña())){
+                if (t instanceof Comprador){
+                    this.setVisible(false);
+                    vComprador c = new vComprador();
+                    c.setVisible(true);
+                    
+                    break;
+                }
+                if (t instanceof Vendedor){
+                    this.setVisible(false);
+                    vVendedor v=new vVendedor();
+                    v.setVisible(true);
+                    
+                    break;
+                }
+                if (t instanceof Administrador){
+                    this.setVisible(false);
+                    
+                    a.setVisible(true);
+                    this.nombre=t.getNombre();
+                    break;
+                }
+                break;
+                
+            }
+            c1++;   
+        }
+        if (c1==usuarios.size()){
+            JOptionPane.showMessageDialog(this, "El usuario o la contraseña ingresada no coinciden");
+        }
     }//GEN-LAST:event_B_IniciarSesionActionPerformed
 
     private void B_RegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_B_RegistrarseActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        vRegistro r = new vRegistro();
+        r.setVisible(true);
     }//GEN-LAST:event_B_RegistrarseActionPerformed
+
+    private void e_UsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_e_UsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_e_UsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,4 +268,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+
+
 }
+
+
